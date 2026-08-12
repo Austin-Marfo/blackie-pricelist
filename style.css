@@ -1,0 +1,238 @@
+:root{
+    --bg: #0a0a0a;
+    --bg-card: #141311;
+    --bg-card-hi: #1c1810;
+    --bg-panel: #111010;
+    --gold: #c9a227;
+    --gold-bright: #e9c878;
+    --gold-line: rgba(201,162,39,0.32);
+    --gold-line-soft: rgba(201,162,39,0.16);
+    --ink: #f4f0e6;
+    --ink-dim: #a89f8c;
+    --ink-faint: #6f6858;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ background:var(--bg); }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% 0%, rgba(201,162,39,0.07), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .sheet{
+    max-width:640px;
+    margin:0 auto;
+    padding: 44px 20px 30px;
+    position:relative;
+  }
+
+  /* ---------- viewfinder corner motif (signature element) ---------- */
+  .corners{ position:relative; }
+  .corners::before, .corners::after,
+  .corners .c-tl, .corners .c-tr{
+    content:"";
+    position:absolute;
+    width:22px; height:22px;
+    border:1.5px solid var(--gold);
+    opacity:0.75;
+  }
+  .corners::before{ top:-10px; left:-10px; border-right:none; border-bottom:none; }
+  .corners::after{ top:-10px; right:-10px; border-left:none; border-bottom:none; }
+  .corners .c-tl{ bottom:-10px; left:-10px; border-right:none; border-top:none; }
+  .corners .c-tr{ bottom:-10px; right:-10px; border-left:none; border-top:none; }
+
+  /* ---------- header ---------- */
+  .header{ text-align:center; padding: 8px 18px 30px; }
+  .wordmark{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size: 44px;
+    color:var(--ink);
+    letter-spacing:0.5px;
+    line-height:1;
+    margin:0;
+  }
+  .wordmark-sub{
+    font-family:'Manrope', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:6px;
+    color:var(--gold);
+    margin: 8px 0 0;
+  }
+  .rates-title{
+    font-size: 50px;
+    font-weight:1000;
+    letter-spacing:2px;
+    margin: 0px;
+    padding: 0px;
+    color:var(--gold-);
+  }
+  .tagline{
+    font-size:13.5px;
+    color:var(--ink-dim);
+    font-weight:500;
+    max-width: 340px;
+    margin: 0 auto;
+    line-height:1.5;
+  }
+
+  .divider{
+    display:flex; align-items:center; gap:12px;
+    margin: 30px 0;
+    color:var(--gold);
+  }
+  .divider::before, .divider::after{
+    content:""; flex:1; height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold-line), transparent);
+  }
+  .divider svg{ flex-shrink:0; opacity:0.85; }
+
+  /* ---------- category section ---------- */
+  .category{ margin: 8px 0 40px; }
+  .cat-head{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+  }
+  .cat-icon{
+    width:34px; height:34px;
+    border:1px solid var(--gold-line);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .cat-icon svg{ width:17px; height:17px; }
+  .cat-title{
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:2px;
+    color:var(--ink);
+  }
+  .cat-sub{
+    font-size:11px;
+    color:var(--ink-faint);
+    font-weight:600;
+    letter-spacing:0.5px;
+    margin-top:1px;
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  @media (min-width:560px){
+    .cards{ grid-template-columns:repeat(3, 1fr); }
+  }
+
+  .card{
+    background:var(--bg-card);
+    border:1px solid rgba(201,162,39,0.14);
+    border-radius:4px;
+    padding:18px 16px 16px;
+    position:relative;
+  }
+  .card.hi{
+    background:linear-gradient(160deg, var(--bg-card-hi), var(--bg-card));
+    border:1px solid var(--gold-line);
+    box-shadow: 0 0 0 1px rgba(201,162,39,0.05) inset;
+  }
+  .card-tier{
+    font-size:11.5px;
+    font-weight:800;
+    letter-spacing:2.5px;
+    color:var(--gold-bright);
+  }
+  .card-price{
+    font-size:26px;
+    font-weight:800;
+    color:var(--ink);
+    margin: 3px 0 12px;
+    letter-spacing:0.3px;
+  }
+  .card-price span{
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink-faint);
+  }
+  .card-line{
+    display:flex; align-items:center; gap:8px;
+    font-size:13px;
+    color:var(--ink-dim);
+    padding:6px 0;
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .card-line:first-of-type{ border-top:none; padding-top:0; }
+  .card-line svg{ width:14px; height:14px; flex-shrink:0; color:var(--gold); opacity:0.85; }
+  .card-line b{ color:var(--ink); font-weight:700; }
+
+  /* ---------- add-ons ---------- */
+  .addons{
+    border:1px solid var(--gold-line);
+    border-radius:4px;
+    padding:22px 18px;
+    margin: 6px 0 40px;
+    background: linear-gradient(180deg, rgba(201,162,39,0.05), transparent 60%);
+  }
+  .addons-title{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:4px;
+    color:var(--gold);
+    margin-bottom:16px;
+  }
+  .addon-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:10px 0;
+    border-top:1px solid rgba(201,162,39,0.12);
+    gap:14px;
+  }
+  .addon-row:first-of-type{ border-top:none; padding-top:0; }
+  .addon-name{ font-size:13.5px; font-weight:600; color:var(--ink); }
+  .addon-note{ display:block; font-size:11px; color:var(--ink-faint); font-weight:500; margin-top:2px; }
+  .addon-price{ font-size:13.5px; font-weight:700; color:var(--gold-bright); white-space:nowrap; text-align:right; }
+
+  /* ---------- session info ---------- */
+  .info{
+    text-align:center;
+    padding: 6px 10px 38px;
+  }
+  .info-title{
+    font-size:11px; font-weight:800; letter-spacing:4px; color:var(--ink-faint);
+    margin-bottom:14px;
+  }
+  .info p{
+    font-size:12.5px; color:var(--ink-dim); line-height:1.65;
+    max-width:400px; margin:0 auto 10px;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 14px;
+    padding: 28px 6px;
+    border-top:1px solid var(--gold-line-soft);
+    border-bottom:1px solid var(--gold-line-soft);
+    margin-bottom:34px;
+  }
+  .contact-item{ display:flex; gap:10px; align-items:flex-start; }
+  .contact-item svg{ width:16px; height:16px; color:var(--gold); flex-shrink:0; margin-top:2px; }
+  .contact-label{ font-size:10px; font-weight:800; letter-spacing:2px; color:var(--ink-faint); margin-bottom:3px; }
+  .contact-value{ font-size:13px; font-weight:600; color:var(--ink); line-height:1.5; }
+
+  .footer{
+    text-align:center;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:5px;
+    color:var(--gold);
+    opacity:0.9;
+    padding-bottom:6px;
+  }
