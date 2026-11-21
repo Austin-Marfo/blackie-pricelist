@@ -62,10 +62,10 @@
 
   /* extras */
   .ex{display:grid;gap:0}
-  .ex div{display:flex;justify-content:space-between;padding:3.4mm 0;border-bottom:1px solid var(--line);font-size:11pt}
+  .ex div{display:flex;justify-content:space-between;padding:2.3mm 0;border-bottom:1px solid var(--line);font-size:11pt}
   .ex div span small{display:block;font-size:8pt;color:var(--muted)}
   .ex div b{font-size:12pt}
-  .info{margin-top:6mm;background:var(--soft);border-radius:4mm;padding:4mm 5mm;font-size:9pt;line-height:1.6}
+  .info{margin-top:4mm;background:var(--soft);border-radius:4mm;padding:4mm 5mm;font-size:9pt;line-height:1.6}
   .info ul{margin:1mm 0 0;padding-left:4mm}
   .contactbox{margin-top:auto;display:flex;gap:5mm;align-items:center;padding-top:5mm}
   .contactbox .qr{padding:1.5mm;border:1px solid var(--line)}
@@ -85,7 +85,7 @@
 <body>
 <div class="tools">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <label><input type="checkbox" id="only-card"> Counter card only (page 2)</label>
+  <label><input type="checkbox" id="only-card"> Counter card only (front &amp; back)</label>
   <span>Paper: A5 · Margins: none · Background graphics: on</span>
 </div>
 <div class="pages" id="pages"></div>
@@ -143,7 +143,7 @@ const catPages = D.categories.map(c => pg("", `
   </div>
   <div class="catfoot">Want more? Add an outdoor shoot, extra looks or extra photos — see Extras.</div>`));
 
-const extras = pg("", `
+const extras = pg("card", `
   <div class="eyebrow">Make it yours</div>
   <h2>Extras</h2>
   <p class="lead">Add any of these to any package.</p>
