@@ -91,7 +91,7 @@
 <div class="pages" id="pages"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="pricing.js"></script>
+<script>document.write('<script src="pricing.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 (() => {
 const D = window.BLACKIE, C = D.currency, S = D.studio;
