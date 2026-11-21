@@ -62,6 +62,7 @@ window.BLACKIE = {
   // type: "toggle" = yes/no, "count" = quantity stepper
   addons: [
     { id: "outdoor",     name: "Outdoor session",       price: 100, type: "toggle", note: "Shoot on location" },
+    { id: "priority",    name: "Priority editing (24 hrs)", price: 100, type: "toggle", note: "Edited photos ready within 24 hours" },
     { id: "look",        name: "Extra look / outfit",    price: 50,  type: "count",  note: "per look", max: 5 },
     { id: "photo",       name: "Extra edited photo",     price: 20,  type: "count",  note: "per photo", max: 20 },
     { id: "bundle5",     name: "+5 edited photos bundle", price: 80, type: "count",  note: "save GH¢20", max: 4, badge: "Best value" },
