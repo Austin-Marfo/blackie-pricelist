@@ -19,7 +19,7 @@ window.BLACKIE = {
 
   // Paste your Google Apps Script web-app URL here (see SETUP.md).
   // Leave empty "" to skip the Google Sheet and only use WhatsApp.
-  sheetUrl: "",
+  sheetUrl: "https://script.google.com/macros/s/AKfycbyt9S0b2l0oFNLmEirYuT-wrUEHe4qKaAm8G4rubVsf4PxpXXRtZ5bOlQ1_wKlDJF88Bg/exec",
 
   currency: "GH¢",
   popularTier: "classic",
