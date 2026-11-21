@@ -170,7 +170,7 @@
 <div class="app" id="app"></div>
 <div class="bar" id="bar" hidden></div>
 
-<script src="pricing.js"></script>
+<script>document.write('<script src="pricing.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 (() => {
 const D = window.BLACKIE, C = D.currency;
