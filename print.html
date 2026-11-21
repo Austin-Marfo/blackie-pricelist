@@ -99,7 +99,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const pop = D.popularTier;
 const tierNames = D.categories[0].tiers.map(t => t);
 let n = 0;
-const pg = (cls, html) => `<section class="page ${cls}">${html}<div class="pno">BLACKIE PHOTOGRAPHY · ${++n}</div></section>`;
+const pg = (cls, html) => `<section class="page ${cls}">${html}<div class="pno">BLACKIE PHOTOGRAPHY${(++n, cls === "card" ? "" : " · " + n)}</div></section>`;
 
 const cover = pg("cover", `
   <img src="${esc(S.logo)}" alt="" onerror="this.style.display='none'">
