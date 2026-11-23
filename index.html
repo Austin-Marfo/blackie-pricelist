@@ -48,6 +48,7 @@
   .cat{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
        padding:26px 26px 24px;min-height:190px;display:flex;flex-direction:column;transition:transform .12s, border-color .12s}
   .cat:active{transform:scale(.98);border-color:var(--gold)}
+  .cat:last-child:nth-child(odd){grid-column:1/-1} /* odd count: last card spans the row */
   .cat .ic{width:54px;height:54px;border-radius:14px;background:rgba(212,168,75,.12);color:var(--gold);display:grid;place-items:center;margin-bottom:auto}
   .cat .ic svg{width:30px;height:30px}
   .cat h2{font-family:var(--serif);font-size:34px;font-weight:600;margin:18px 0 2px;line-height:1}
@@ -170,6 +171,7 @@
 <div class="app" id="app"></div>
 <div class="bar" id="bar" hidden></div>
 
+<!-- always load the latest prices (skips any old saved copy) -->
 <script>document.write('<script src="pricing.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 (() => {
@@ -188,6 +190,7 @@ const ICON = {
   kids:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="9" r="5"/><path d="M10 9h.01M14 9h.01M10.5 11.5c.8.6 2.2.6 3 0M12 4c0-1 1-2 2-2"/><path d="M6 22c.5-3 3-5 6-5s5.5 2 6 5"/></svg>',
   couple:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><circle cx="16.5" cy="8.5" r="3"/><path d="M2 20c0-3.5 2.7-6 6-6 1.6 0 3 .5 4 1.4M12.5 20c0-3 1.8-5.3 4-5.3s4 2.3 4 5.3"/></svg>',
   group:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="10" r="2.3"/><circle cx="19" cy="10" r="2.3"/><path d="M7 20c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5M1.5 19c0-2.3 1.4-4 3.5-4M22.5 19c0-2.3-1.4-4-3.5-4"/></svg>',
+  grad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/></svg>',
   back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
   next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   tick:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
@@ -204,7 +207,7 @@ let S = fresh();
 
 const cat  = () => D.categories.find(c => c.id === S.cat);
 const tier = () => cat()?.tiers.find(t => t.id === S.tier);
-const addonsFor = id => D.addons.filter(a => !a.only || a.only.includes(id));
+const addonsFor = id => D.addons.filter(a => (!a.only || a.only.includes(id)) && !(a.not || []).includes(id));
 const addLines = () => addonsFor(S.cat).filter(a => S.adds[a.id]).map(a => {
   const q = a.type === "toggle" ? 1 : S.adds[a.id];
   return { name: a.name, qty: q, amount: q * a.price, type: a.type };
@@ -229,7 +232,7 @@ function header(){
 function features(t){
   return `<ul class="feat">
     ${t.people ? `<li>${ICON.people}<span>Up to <b>${t.people}</b> people</span></li>` : ""}
-    <li>${ICON.shirt}<span><b>${t.outfits}</b> outfits</span></li>
+    <li>${ICON.shirt}<span><b>${t.outfits}</b> outfit${t.outfits === 1 ? "" : "s"}</span></li>
     <li>${ICON.photo}<span><b>${t.photos}</b> edited photos</span></li>
     <li>${ICON.clock}<span>Up to <b>${t.minutes}</b> mins</span></li>
   </ul>`;
@@ -421,7 +424,7 @@ function buildBooking(){
     session: `${c.name} · ${t.name}`,
     addons: addLines().map(l => l.name + (l.type==="count" ? " x" + l.qty : "") + " (" + money(l.amount) + ")").join("; "),
     total: total(),
-    includes: `${t.people ? "Up to " + t.people + " people, " : ""}${t.outfits} outfits, ${t.photos} edited photos, up to ${t.minutes} mins`,
+    includes: `${t.people ? "Up to " + t.people + " people, " : ""}${t.outfits} outfit${t.outfits === 1 ? "" : "s"}, ${t.photos} edited photos, up to ${t.minutes} mins`,
     notes: S.notes.trim(),
     device: navigator.userAgent.includes("Mobile") ? "phone/tablet" : "computer"
   };

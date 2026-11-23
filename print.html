@@ -91,6 +91,7 @@
 <div class="pages" id="pages"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- always load the latest prices (skips any old saved copy) -->
 <script>document.write('<script src="pricing.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 (() => {
@@ -135,7 +136,7 @@ const catPages = D.categories.map(c => pg("", `
       <div class="pr"><small>${C}</small>${t.price}</div>
       <ul>
         ${t.people ? `<li>Up to <b>${t.people}</b> people</li>` : ""}
-        <li><b>${t.outfits}</b> outfits</li>
+        <li><b>${t.outfits}</b> outfit${t.outfits === 1 ? "" : "s"}</li>
         <li><b>${t.photos}</b> edited photos</li>
         <li>Up to <b>${t.minutes}</b> minutes</li>
       </ul>
@@ -148,7 +149,7 @@ const extras = pg("card", `
   <h2>Extras</h2>
   <p class="lead">Add any of these to any package.</p>
   <div class="ex">
-    ${D.addons.map(a => `<div><span>${esc(a.name)}<small>${esc(a.note || "")}${a.only ? " · Group/Family only" : ""}</small></span><b>+${C}${a.price}</b></div>`).join("")}
+    ${D.addons.map(a => `<div><span>${esc(a.name)}<small>${esc(a.note || "")}${a.only ? " · Group/Family only" : ""}${a.not ? " · not for Graduation" : ""}</small></span><b>+${C}${a.price}</b></div>`).join("")}
   </div>
   <div class="info"><b>Good to know</b><ul>${D.notes.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
   <div class="contactbox">

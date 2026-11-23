@@ -56,12 +56,21 @@ window.BLACKIE = {
         { id: "classic",   name: "Classic",   price: 500, people: 4, outfits: 3, photos: 10, minutes: 75 },
         { id: "premium",   name: "Premium",   price: 700, people: 5, outfits: 4, photos: 15, minutes: 90 }
       ]
+    },
+    {
+      id: "graduation", name: "Graduation shoot", blurb: "Outdoor on KsTU campus · 50% deposit to book", icon: "grad",
+      tiers: [
+        { id: "essential", name: "Essential", price: 350, outfits: 1, photos: 10, minutes: 45 },
+        { id: "classic",   name: "Classic",   price: 500, outfits: 2, photos: 15, minutes: 60 },
+        { id: "premium",   name: "Premium",   price: 700, outfits: 3, photos: 25, minutes: 90 }
+      ]
     }
   ],
 
   // type: "toggle" = yes/no, "count" = quantity stepper
+  // only: [...] = show for these categories only; not: [...] = hide for these categories
   addons: [
-    { id: "outdoor",     name: "Outdoor session",       price: 100, type: "toggle", note: "Shoot on location" },
+    { id: "outdoor",     name: "Outdoor session",       price: 100, type: "toggle", note: "Shoot on location", not: ["graduation"] }, // graduation is already outdoor
     { id: "priority",    name: "Priority editing (24 hrs)", price: 100, type: "toggle", note: "Edited photos ready within 24 hours" },
     { id: "look",        name: "Extra look / outfit",    price: 50,  type: "count",  note: "per look", max: 5 },
     { id: "photo",       name: "Extra edited photo",     price: 20,  type: "count",  note: "per photo", max: 20 },
