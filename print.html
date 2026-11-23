@@ -198,7 +198,7 @@ const catPages = D.categories.map(c => pg("", `
       </ul>
     </div>`).join("")}
   </div>
-  <div class="catfoot">Want more? Add an outdoor shoot, extra looks or extra photos — see Extras.</div>`));
+  <div class="catfoot">Want more? Add ${D.addons.some(a => a.id === "outdoor" && (a.not || []).includes(c.id)) ? "priority editing" : "an outdoor shoot"}, extra looks or extra photos — see Extras.</div>`));
 
 const extras = pg("", `
   <div class="eyebrow">Make it yours</div>
