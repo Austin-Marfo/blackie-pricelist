@@ -72,6 +72,37 @@
   .contactbox .qr img,.contactbox .qr canvas{width:24mm!important;height:24mm!important}
   .contactbox div.t{font-size:9pt;line-height:1.7}
 
+  /* counter card: every price sits in its own box with its details */
+  .page.cp{padding:9mm 10mm 8mm}
+  .cp-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);padding-bottom:2.5mm;margin-bottom:3.5mm}
+  .cp-head h2{font-size:21pt;margin:1mm 0 0}
+  .cp-head .side{font-size:7pt;letter-spacing:2px;font-weight:800;color:var(--muted);text-transform:uppercase;text-align:right}
+  .cblk{margin-bottom:5mm}
+  .cblk-h{display:flex;align-items:baseline;gap:2.5mm;margin-bottom:2.4mm}
+  .cblk-h b{font-family:var(--serif);font-size:18pt;font-weight:600;line-height:1}
+  .cblk-h span{font-size:8.5pt;color:var(--muted)}
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm}
+  .mc{position:relative;border:1px solid var(--line);border-radius:3mm;padding:3.6mm 3.4mm 3.2mm}
+  .mc.pop{border:1.6px solid var(--gold);background:var(--soft)}
+  .mc .tn{font-size:7pt;letter-spacing:1.8px;font-weight:800;color:var(--gold);text-transform:uppercase}
+  .mc .pp{font-size:21pt;font-weight:800;letter-spacing:-.4px;line-height:1;margin:1.2mm 0 1.8mm}
+  .mc .pp small{font-size:8.5pt;color:var(--muted);font-weight:700;margin-right:.4mm}
+  .mc ul{list-style:none;margin:0;padding:0;font-size:9pt;line-height:1.5}
+  .mc ul b{font-weight:800}
+  .mc .pill{top:-2.1mm;right:2.5mm;font-size:5.5pt;letter-spacing:1px;padding:.6mm 2mm}
+  .cp-foot{margin-top:auto;display:flex;align-items:center;gap:4mm;border-top:1px solid var(--line);padding-top:3mm}
+  .cp-foot .qr{padding:1.2mm;border:1px solid var(--line)}
+  .cp-foot .qr img,.cp-foot .qr canvas{width:19mm!important;height:19mm!important}
+  .cp-foot .t{flex:1;font-size:8pt;line-height:1.55}
+  .cp-foot .turn{font-weight:800;font-size:8.5pt;color:var(--gold);text-align:right;line-height:1.4}
+  .cx-h{display:flex;align-items:baseline;gap:2.5mm;margin:1mm 0 1.5mm}
+  .cx-h b{font-family:var(--serif);font-size:18pt;font-weight:600}
+  .cx-h span{font-size:7.5pt;color:var(--muted)}
+  .cx{display:grid;grid-template-columns:1fr 1fr;gap:0 5mm}
+  .cx div{display:flex;justify-content:space-between;gap:2mm;padding:2.2mm 0;border-bottom:1px solid var(--line);font-size:9pt}
+  .cx div small{display:block;font-size:7pt;color:var(--muted)}
+  .cx div b{font-size:9.5pt;white-space:nowrap}
+
   @page{size:A5;margin:0}
   @media print{
     body{background:none}
@@ -100,7 +131,10 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const pop = D.popularTier;
 const tierNames = D.categories[0].tiers.map(t => t);
 let n = 0;
-const pg = (cls, html) => `<section class="page ${cls}">${html}<div class="pno">BLACKIE PHOTOGRAPHY${(++n, cls === "card" ? "" : " · " + n)}</div></section>`;
+// booklet pages get numbers; counter-card pages ("card") get no footer
+const pg = (cls, html) => cls.includes("card")
+  ? `<section class="page ${cls}">${html}</section>`
+  : `<section class="page book ${cls}">${html}<div class="pno">BLACKIE PHOTOGRAPHY · ${++n}</div></section>`;
 
 const cover = pg("cover", `
   <img src="${esc(S.logo)}" alt="" onerror="this.style.display='none'">
@@ -111,19 +145,41 @@ const cover = pg("cover", `
   <div class="scan">Scan to see prices & book</div>
   <div class="contact">${S.phones.map(esc).join("  ·  ")}<br>${esc(S.location)}<br>IG @${esc(S.instagram)} · TikTok ${esc(S.tiktok)}</div>`);
 
-const glance = pg("card", `
-  <div class="eyebrow">At a glance</div>
-  <h2>All prices, one page</h2>
-  <p class="lead">Pick your session type, then your package. Extras on the back page.</p>
-  <table>
-    <thead><tr><th></th>${tierNames.map(t => `<th class="${t.id===pop?"pop":""}">${esc(t.name)}${t.id===pop?"<br>★ Popular":""}</th>`).join("")}</tr></thead>
-    <tbody>${D.categories.map(c => `<tr><td>${esc(c.name)}<small>${esc(c.blurb)}</small></td>
-      ${c.tiers.map(t => `<td class="${t.id===pop?"pop":""}">${C}${t.price}</td>`).join("")}</tr>`).join("")}</tbody>
-  </table>
-  <div class="gl-feat">
-    ${tierNames.map(t => `<div><b>${esc(t.name)}</b>${t.outfits} outfits<br>${t.photos} edited photos</div>`).join("")}
+/* ---------- counter card: each price in its own box, details right under it ---------- */
+const miniBlock = c => `<div class="cblk">
+  <div class="cblk-h"><b>${esc(c.name)}</b><span>${esc(c.blurb)}</span></div>
+  <div class="row3">${c.tiers.map(t => `<div class="mc ${t.id===pop?"pop":""}">
+    ${t.id===pop ? `<span class="pill">Most popular</span>` : ""}
+    <div class="tn">${esc(t.name)}</div>
+    <div class="pp"><small>${C}</small>${t.price}</div>
+    <ul>
+      ${t.people ? `<li>Up to <b>${t.people}</b> people</li>` : ""}
+      <li><b>${t.outfits}</b> outfit${t.outfits === 1 ? "" : "s"}</li>
+      <li><b>${t.photos}</b> edited photos</li>
+      <li>Up to <b>${t.minutes}</b> mins</li>
+    </ul>
+  </div>`).join("")}</div>
+</div>`;
+const half = Math.ceil(D.categories.length / 2);
+const frontCats = D.categories.slice(0, half), backCats = D.categories.slice(half);
+const cardFront = pg("card cp", `
+  <div class="cp-head"><div><div class="eyebrow">Blackie Photography</div><h2>Portrait Rates</h2></div>
+    <div class="side">Pick a session,<br>then a package</div></div>
+  ${frontCats.map(miniBlock).join("")}
+  <div class="cp-foot">
+    <div class="qr" id="qr3"></div>
+    <div class="t"><b>Scan to book on your phone</b><br>WhatsApp ${S.phones.map(p => `<span style="white-space:nowrap">${esc(p)}</span>`).join(" · ")}<br>${esc(S.location)}</div>
+    <div class="turn">${backCats.map(c => esc(c.name)).join(", ")}<br>& Extras — turn over ↻</div>
+  </div>`);
+const cardBack = pg("card cp", `
+  ${backCats.map(miniBlock).join("")}
+  <div class="cx-h"><b>Extras</b><span>Add to any package</span></div>
+  <div class="cx">
+    ${D.addons.map(a => `<div><span>${esc(a.name)}<small>${esc(a.note || "")}${a.only ? " · Group/Family only" : ""}${a.not ? " · not for Graduation" : ""}</small></span><b>+${C}${a.price}</b></div>`).join("")}
   </div>
-  <p class="note">Session length depends on the type of shoot (30–90 mins). Group/Family: Essential up to 3 people, Classic up to 4, Premium up to 5 — extra person +${C}100.</p>`);
+  <div class="cp-foot">
+    <div class="t">${D.notes.map(esc).join(" ")}<br><b>IG @${esc(S.instagram)}</b> · TikTok ${esc(S.tiktok)}</div>
+  </div>`);
 
 const catPages = D.categories.map(c => pg("", `
   <div class="eyebrow">${esc(c.blurb)}</div>
@@ -144,7 +200,7 @@ const catPages = D.categories.map(c => pg("", `
   </div>
   <div class="catfoot">Want more? Add an outdoor shoot, extra looks or extra photos — see Extras.</div>`));
 
-const extras = pg("card", `
+const extras = pg("", `
   <div class="eyebrow">Make it yours</div>
   <h2>Extras</h2>
   <p class="lead">Add any of these to any package.</p>
@@ -157,18 +213,21 @@ const extras = pg("card", `
     <div class="t"><b>Book on WhatsApp</b><br>${S.phones.map(esc).join(" · ")}<br>${esc(S.location)}<br>IG @${esc(S.instagram)}</div>
   </div>`);
 
-document.getElementById("pages").innerHTML = cover + glance + catPages.join("") + extras;
+document.getElementById("pages").innerHTML = cover + catPages.join("") + extras + cardFront + cardBack;
 
 function qr(id, size){
   const el = document.getElementById(id);
   if (window.QRCode) new QRCode(el, { text: S.menuUrl, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
   else el.textContent = S.menuUrl;
 }
-qr("qr1", 400); qr("qr2", 300);
+qr("qr1", 400); qr("qr2", 300); qr("qr3", 300);
 
-document.getElementById("only-card").addEventListener("change", e => {
-  document.querySelectorAll(".page").forEach(p => p.classList.toggle("skip", e.target.checked && !p.classList.contains("card")));
-});
+// unticked = booklet only; ticked = counter card (front & back) only
+const box = document.getElementById("only-card");
+const showMode = () => document.querySelectorAll(".page").forEach(p =>
+  p.classList.toggle("skip", box.checked ? !p.classList.contains("card") : p.classList.contains("card")));
+box.addEventListener("change", showMode);
+showMode();
 })();
 </script>
 </body>
